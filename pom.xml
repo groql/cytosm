@@ -11,6 +11,17 @@
   <name>Cytosm</name>
   <description>Cytosm Graph Tools</description>
 
+	<distributionManagement>
+		<repository>
+			<id>deffun-releases</id>
+			<url>https://repo.deffun.io/releases</url>
+		</repository>
+        <snapshotRepository>
+            <id>deffun-snapshots</id>
+            <url>https://repo.deffun.io/releases</url>
+        </snapshotRepository>
+	</distributionManagement>
+
 	<licenses>
 		<license>
 			<name>Apache 2</name>
