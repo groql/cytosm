@@ -123,4 +123,12 @@ public class ImplementationLevelGtop {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "ImplementationLevelGtop{" +
+               "graphMetadata=" + graphMetadata +
+               ", implementationNodes=" + implementationNodes +
+               ", implementationEdges=" + implementationEdges +
+               '}';
+    }
 }

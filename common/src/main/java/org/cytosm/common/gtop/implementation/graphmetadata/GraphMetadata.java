@@ -120,4 +120,13 @@ public class GraphMetadata {
         return (this.hashCode() == o.hashCode());
     }
 
+    @Override
+    public String toString() {
+        return "GraphMetadata{" +
+               "storageLayout=" + storageLayout +
+               ", backendSystem=" + backendSystem +
+               ", snapshotConcatenationFactor=" + snapshotConcatenationFactor +
+               ", snapshotConcatenationUnit=" + snapshotConcatenationUnit +
+               '}';
+    }
 }
