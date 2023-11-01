@@ -1,8 +1,8 @@
 package org.cytosm.cypher2sql.lowering;
 
 import org.cytosm.cypher2sql.PassAvailables;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 /**
  * Rendering tests don't assert anything. Instead they
@@ -15,7 +15,7 @@ import org.junit.Test;
 public class RenderingTests extends BaseLDBCTests {
 
     @Test
-    @Ignore
+    @Disabled
     public void testBasicCypherToSQL() throws Exception {
         String cypher = "" +
                 "MATCH (a:Person {firstName: 'Richard', lastName: 'Smith'})-[:KNOWS]-(b:Person)\n" +

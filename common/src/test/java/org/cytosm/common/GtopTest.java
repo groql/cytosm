@@ -9,9 +9,9 @@ import java.util.List;
 
 import org.apache.commons.io.FileUtils;
 import org.cytosm.common.gtop.implementation.graphmetadata.BackendSystem;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cytosm.common.gtop.GTop;
@@ -64,9 +64,9 @@ public class GtopTest {
         GTop gTop2 = mapper.readValue(jsonInString, GTop.class);
 
         // assert they are the same
-        Assert.assertEquals(gTop.getVersion(), gTop2.getVersion());
-        Assert.assertEquals(gTop.getAbstractionLevel(), gTop2.getAbstractionLevel());
-        Assert.assertEquals(gTop.getImplementationLevel(), gTop2.getImplementationLevel());
+        Assertions.assertEquals(gTop.getVersion(), gTop2.getVersion());
+        Assertions.assertEquals(gTop.getAbstractionLevel(), gTop2.getAbstractionLevel());
+        Assertions.assertEquals(gTop.getImplementationLevel(), gTop2.getImplementationLevel());
     }
 
     @Test
@@ -159,22 +159,22 @@ public class GtopTest {
         // Check the integrity of reading value back ...
 
         // whole levels:
-        //Assert.assertEquals(gTop.getAbstractionLevel(), gtopFromString.getAbstractionLevel());
+        //Assertions.assertEquals(gTop.getAbstractionLevel(), gtopFromString.getAbstractionLevel());
 
-        //Assert.assertEquals(gTop.getImplementationLevel(), gtopFromString.getImplementationLevel());
+        //Assertions.assertEquals(gTop.getImplementationLevel(), gtopFromString.getImplementationLevel());
 
         // abstract edges:
 
-        Assert.assertEquals(gInterface.getAbstractionEdgesByTypes("edge1").get(0).getDestinationType().get(0),
+        Assertions.assertEquals(gInterface.getAbstractionEdgesByTypes("edge1").get(0).getDestinationType().get(0),
                 gInterfaceFromString.getAbstractionEdgesByTypes("edge1").get(0).getDestinationType().get(0));
 
-        Assert.assertEquals(gInterface.getAbstractionEdgesByTypes("edge1").get(0).getSourceType().get(0),
+        Assertions.assertEquals(gInterface.getAbstractionEdgesByTypes("edge1").get(0).getSourceType().get(0),
                 gInterfaceFromString.getAbstractionEdgesByTypes("edge1").get(0).getSourceType().get(0));
 
-        Assert.assertEquals(gInterface.getAbstractionEdgesByTypes("edge1").get(0).isDirected(), gInterfaceFromString
+        Assertions.assertEquals(gInterface.getAbstractionEdgesByTypes("edge1").get(0).isDirected(), gInterfaceFromString
                 .getAbstractionEdgesByTypes("edge1").get(0).isDirected());
 
-        Assert.assertEquals(gInterface.getAbstractionEdgesByTypes("edge1").get(0).getTypes().get(0), gInterfaceFromString
+        Assertions.assertEquals(gInterface.getAbstractionEdgesByTypes("edge1").get(0).getTypes().get(0), gInterfaceFromString
                 .getAbstractionEdgesByTypes("edge1").get(0).getTypes().get(0));
 
         AbstractionNode nod1 = gInterface.getAbstractionNodesByTypes("node1").get(0);
@@ -188,32 +188,32 @@ public class GtopTest {
         List<AbstractionNode> allNodesFromEdge =
                 gInterface.getNodesForEdge(gInterface.getAbstractionEdgesByTypes("edge1").get(0));
 
-        Assert.assertTrue(allNodes.contains(nod1) && allNodes.contains(nod2));
-        Assert.assertTrue(sourceNodes.contains(nod1) && sourceNodes.size() == 1);
-        Assert.assertTrue(destinationNodes.contains(nod2) && destinationNodes.size() == 1);
-        Assert.assertTrue(allNodesFromEdge.size() == 2 && allNodesFromEdge.contains(nod1)
+        Assertions.assertTrue(allNodes.contains(nod1) && allNodes.contains(nod2));
+        Assertions.assertTrue(sourceNodes.contains(nod1) && sourceNodes.size() == 1);
+        Assertions.assertTrue(destinationNodes.contains(nod2) && destinationNodes.size() == 1);
+        Assertions.assertTrue(allNodesFromEdge.size() == 2 && allNodesFromEdge.contains(nod1)
                 && allNodesFromEdge.contains(nod2));
 
-        //Assert.assertEquals(impedg1, impedg2);
+        //Assertions.assertEquals(impedg1, impedg2);
 
         // abstract Nodes:
-        Assert.assertEquals(gInterface.getAbstractionNodesByTypes("node1"),
+        Assertions.assertEquals(gInterface.getAbstractionNodesByTypes("node1"),
                 gInterfaceFromString.getAbstractionNodesByTypes("node1"));
 
-        Assert.assertNotEquals(gInterface.getAbstractionNodesByTypes("node1"),
+        Assertions.assertNotEquals(gInterface.getAbstractionNodesByTypes("node1"),
                 gInterfaceFromString.getAbstractionNodesByTypes("node2"));
 
-        //Assert.assertEquals(gTop.getAbstractionNodes(), gtopFromString.getAbstractionNodes());
+        //Assertions.assertEquals(gTop.getAbstractionNodes(), gtopFromString.getAbstractionNodes());
 
-        //Assert.assertEquals(impnd1.get(0), impnd2.get(0));
+        //Assertions.assertEquals(impnd1.get(0), impnd2.get(0));
 
         // Graph metadata
-        Assert.assertEquals(gTop.getImplementationLevel().getGraphMetadata(), gInterfaceFromString
+        Assertions.assertEquals(gTop.getImplementationLevel().getGraphMetadata(), gInterfaceFromString
                 .getImplementationLevel().getGraphMetadata());
 
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         // remove files:
 

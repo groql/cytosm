@@ -4,7 +4,7 @@ import org.cytosm.common.gtop.GTopInterfaceImpl;
 import org.cytosm.common.gtop.RelationalGTopInterface;
 import org.cytosm.cypher2sql.PassAvailables;
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
