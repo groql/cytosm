@@ -477,9 +477,8 @@ public class Walk {
 
         @Override
         public void visitList(List<?> list) {
-            Iterator<?> iter = list.iterator();
-            while (iter.hasNext()) {
-                Walk.walkExpression(this, (Expression) iter.next());
+            for (Object o : list) {
+                Walk.walkExpression(this, (Expression) o);
             }
         }
 
@@ -625,9 +624,8 @@ public class Walk {
 
         @Override
         public void visitListExpression(ListExpression expression) {
-            Iterator<Expression> iter = expression.exprs.iterator();
-            while (iter.hasNext()) {
-                Walk.walkExpression(this, iter.next());
+            for (Expression value : expression.exprs) {
+                Walk.walkExpression(this, value);
             }
         }
     }

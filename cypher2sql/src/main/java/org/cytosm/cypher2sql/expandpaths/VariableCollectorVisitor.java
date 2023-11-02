@@ -73,9 +73,8 @@ public class VariableCollectorVisitor extends Walk.BaseExpressionVisitor {
 
     @Override
     public void visitFunctionInvocation(FunctionInvocation a) {
-        Iterator<Expression> iter = a.args.iterator();
-        while (iter.hasNext()) {
-            Walk.walkExpression(this, iter.next());
+        for (Expression expression : a.args) {
+            Walk.walkExpression(this, expression);
         }
     }
 

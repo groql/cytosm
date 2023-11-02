@@ -1,11 +1,6 @@
 package org.cytosm.cypher2sql.lowering.rendering;
 
 import org.cytosm.cypher2sql.lowering.sqltree.SQLNode;
-import org.cytosm.cypher2sql.lowering.sqltree.from.FromItem;
-import org.cytosm.cypher2sql.lowering.typeck.var.AliasVar;
-import org.cytosm.cypher2sql.lowering.typeck.var.Var;
-
-import java.util.List;
 
 /**
  * The rendering helper provides context to render

@@ -135,8 +135,7 @@ public class TransformFunctions {
 
         private String getIdForVar(Var var) {
             var = AliasVar.resolveAliasVar(var);
-            if (var instanceof NodeVar) {
-                NodeVar nodeVar = (NodeVar) var;
+            if (var instanceof NodeVar nodeVar) {
                 List<ImplementationNode> nodes = gtop.getImplementationNodesByType(nodeVar.labels.get(0));
                 // FIXME: We should make sure that we always have *exactly* one node returned here.
                 return nodes.get(0).getId().get(0).getColumnName();

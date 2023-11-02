@@ -13,7 +13,6 @@ import org.cytosm.cypher2sql.cypher.ast.clause.match.pattern.*;
 import org.cytosm.cypher2sql.cypher.ast.clause.projection.*;
 
 import java.util.*;
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
@@ -126,7 +125,7 @@ public class VarDependencies {
         List<Relationship> relsToInspect = relationships.entrySet().stream()
                 .filter(a -> a.getKey().compareTo(clauseId) < 0)
                 .flatMap(x -> x.getValue().stream())
-                .collect(Collectors.toList());
+                .toList();
 
         // Start with the used variables:
         stack.addAll(result);
@@ -149,7 +148,7 @@ public class VarDependencies {
             }
         }
 
-        return Collections.unmodifiableList(result.stream().collect(Collectors.toList()));
+        return result.stream().toList();
     }
 
     /**
@@ -222,10 +221,7 @@ public class VarDependencies {
         }
 
         void visitQuery(final SingleQuery query) {
-            Iterator<Clause> iter = query.clauses.iterator();
-            while (iter.hasNext()) {
-                Clause el = iter.next();
-
+            for (Clause el : query.clauses) {
                 if (el instanceof Match) {
                     this.visitMatch((Match) el);
                 } else if (el instanceof With) {
@@ -249,8 +245,7 @@ public class VarDependencies {
                     AliasVar var = new AliasVar((ReturnItem.Aliased) rt, availablesVariables);
                     returnExprs.add(new ExprVar(var));
                     newAvailablesVariables.add(var);
-                } else if (rt instanceof ReturnItem.Unaliased) {
-                    ReturnItem.Unaliased urt = (ReturnItem.Unaliased) rt;
+                } else if (rt instanceof ReturnItem.Unaliased urt) {
                     returnExprs.add(
                         new ExprTree.AliasExpr(
                             ExprTreeBuilder.buildFromCypherExpression(rt.expression, availablesVariables),
@@ -312,13 +307,9 @@ public class VarDependencies {
 
         private void visitMatch(Match m) {
 
-            Iterator<PatternPart> iterpp = m.pattern.patternParts.iterator();
-
             // Each pattern part will either reuse previously defined
             // variables or create new ones.
-            while (iterpp.hasNext()) {
-                PatternPart pp = iterpp.next();
-
+            for (PatternPart pp : m.pattern.patternParts) {
                 List<Var> newVarList = this.newClauseID(pp.span, ClauseId.ClauseKind.MATCH);
 
                 if (pp instanceof NamedPatternPart) {
@@ -367,16 +358,14 @@ public class VarDependencies {
         }
 
         private void collectVariable(PatternElement pe, List<Var> foundVariables) {
-            if (pe instanceof NodePattern) {
+            if (pe instanceof NodePattern np) {
                 // We always create a variable for node
                 // patterns because the Relationship
                 // refers to existing variables only.
                 // This special case is really to accommodate
                 // and make more ergonomic the use of Relationship objects.
-                NodePattern np = (NodePattern) pe;
                 addVariable(foundVariables, new NodeVar(np, availablesVariables));
-            } else if (pe instanceof RelationshipChain) {
-                RelationshipChain rl = (RelationshipChain) pe;
+            } else if (pe instanceof RelationshipChain rl) {
 
                 collectVariable(rl.element, foundVariables);
                 collectVariable(rl.rightNode, foundVariables);
@@ -398,8 +387,7 @@ public class VarDependencies {
         }
 
         private void collectRelationships(final PatternElement p1, final List<Relationship> rels) {
-            if (p1 instanceof RelationshipChain) {
-                RelationshipChain rel = (RelationshipChain) p1;
+            if (p1 instanceof RelationshipChain rel) {
                 if (rel.element instanceof RelationshipChain) {
                     collectRelationships(rel.element, rels);
                 }

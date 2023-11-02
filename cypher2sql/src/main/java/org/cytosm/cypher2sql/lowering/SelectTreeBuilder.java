@@ -14,8 +14,6 @@ import org.cytosm.cypher2sql.cypher.ast.clause.match.pattern.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Iterator;
-import java.util.stream.Collectors;
 
 /**
  * Select Tree Builder is in charge of converting the Cypher tree
@@ -79,15 +77,13 @@ public class SelectTreeBuilder {
 
             // We are about to put all the clause (converted as SELECT)
             // within
-            Iterator<Clause> iter = singleQuery.clauses.iterator();
-            while (iter.hasNext()) {
-                Clause clause = iter.next();
+            for (Clause clause : singleQuery.clauses) {
                 if (clause instanceof Match) {
                     // Match clause gets added to the ScopeSelect.
                     top.withQueries.addAll(
-                        this.foldMatch((Match) clause)
-                            .stream().map(WithSelect::new)
-                            .collect(Collectors.toList())
+                            this.foldMatch((Match) clause)
+                                    .stream().map(WithSelect::new)
+                                    .toList()
                     );
                 } else if (clause instanceof With) {
                     top.withQueries.add(new WithSelect(this.foldWith((With) clause)));
@@ -138,9 +134,7 @@ public class SelectTreeBuilder {
 
             if (projectionClause.orderBy.isPresent()) {
                 OrderBy orderBy = projectionClause.orderBy.get();
-                Iterator<SortItem> sortItems = orderBy.sortItems.iterator();
-                while (sortItems.hasNext()) {
-                    SortItem si = sortItems.next();
+                for (SortItem si : orderBy.sortItems) {
                     SimpleSelect.OrderItem oi = new SimpleSelect.OrderItem();
                     if (si instanceof SortItem.Desc) {
                         oi.descending = true;
@@ -163,14 +157,11 @@ public class SelectTreeBuilder {
 
             List<SimpleSelect> result = new ArrayList<>();
 
-            Iterator<PatternPart> iter = match.pattern.patternParts.iterator();
-            while (iter.hasNext()) {
-                PatternPart pp = iter.next();
-
+            for (PatternPart pp : match.pattern.patternParts) {
                 // Create the SimpleSelect node
                 SimpleSelect select;
                 if (match.optional) {
-                    select =  new SimpleSelectWithLeftJoins();
+                    select = new SimpleSelectWithLeftJoins();
                 } else {
                     select = new SimpleSelectWithInnerJoins();
                 }

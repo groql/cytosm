@@ -192,8 +192,7 @@ public class ComputeFromItems {
                 // If not -> then there is a bug in VarDependencies.
                 FromItem fromItem = new FromItem();
                 fromItem.source = x.getKey();
-                fromItem.variables = vars.getUsedAndIndirectUsedVars(x.getKey().varId).stream()
-                        .collect(Collectors.toList());
+                fromItem.variables = new ArrayList<>(vars.getUsedAndIndirectUsedVars(x.getKey().varId));
                 scopeSelect.ret.fromItem.add(fromItem);
             });
         }

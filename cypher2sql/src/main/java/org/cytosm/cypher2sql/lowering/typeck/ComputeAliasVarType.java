@@ -7,7 +7,6 @@ import org.cytosm.cypher2sql.lowering.exceptions.Unimplemented;
 import org.cytosm.cypher2sql.lowering.typeck.expr.*;
 import org.cytosm.cypher2sql.lowering.typeck.types.*;
 import org.cytosm.cypher2sql.lowering.typeck.var.AliasVar;
-import org.cytosm.cypher2sql.lowering.typeck.var.Var;
 import org.cytosm.cypher2sql.lowering.typeck.constexpr.ConstVal;
 
 import static org.cytosm.cypher2sql.lowering.exceptions.fns.LambdaExceptionUtil.rethrowConsumer;

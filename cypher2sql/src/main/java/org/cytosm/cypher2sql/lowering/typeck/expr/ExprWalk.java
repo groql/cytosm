@@ -1,7 +1,6 @@
 package org.cytosm.cypher2sql.lowering.typeck.expr;
 
 import org.cytosm.cypher2sql.lowering.typeck.var.AliasVar;
-import org.cytosm.cypher2sql.lowering.typeck.var.Var;
 import org.cytosm.cypher2sql.lowering.typeck.constexpr.ConstVal;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -66,7 +65,7 @@ public class ExprWalk {
 
         @Override
         public void visitMapExpr(ExprTree.MapExpr expr) {
-            expr.props.entrySet().forEach(x -> walk(this, x.getValue()));
+            expr.props.forEach((key, value) -> walk(this, value));
         }
 
         @Override

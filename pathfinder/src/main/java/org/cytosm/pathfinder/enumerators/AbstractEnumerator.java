@@ -181,14 +181,14 @@ public abstract class AbstractEnumerator {
 
                 List<AbstractionEdge> matchingEdge = gTopInter.getAbstractionEdges().stream()
                         .filter(absEdge -> AbstractEnumerator.findMatchingAbstractionFilter(element, absEdge))
-                        .collect(Collectors.toList());
+                        .toList();
 
                 /*
                  * The Input provided as a hint that doesn't exist on Gtop. No Match will be found!
                  */
                 if (matchingEdge.isEmpty()) {
                     throw new PathDescriptionException(
-                            element.getTypes().toString() + element.getAttributeMap().keySet().toString());
+                            element.getTypes().toString() + element.getAttributeMap().keySet());
                 } else {
                     // The types do not match the attribute list!
                     if (matchWithPreviousResult
@@ -211,7 +211,7 @@ public abstract class AbstractEnumerator {
                             // .collect(Collectors.joining(", "));
 
                             throw new PathDescriptionException(
-                                    element.getTypes().toString() + element.getAttributeMap().keySet().toString());
+                                    element.getTypes().toString() + element.getAttributeMap().keySet());
                         }
                         // Otherwise just don't add anything - keeps the original match.
 
@@ -224,7 +224,7 @@ public abstract class AbstractEnumerator {
                 // It is a node:
                 List<AbstractionNode> matchingNode = gTopInter.getAbstractionNodes().stream()
                         .filter(absNode -> AbstractEnumerator.findMatchingAbstractionFilter(element, absNode))
-                        .collect(Collectors.toList());
+                        .toList();
 
                 /*
                  * The Input provided as a hint that doesn't exist on Gtop. No Match will be found!
@@ -232,7 +232,7 @@ public abstract class AbstractEnumerator {
                 if (matchingNode.isEmpty()) {
 
                     throw new PathDescriptionException(
-                            element.getTypes().toString() + element.getAttributeMap().keySet().toString());
+                            element.getTypes().toString() + element.getAttributeMap().keySet());
                 } else {
 
                     // The types do not match the attribute list!
@@ -252,7 +252,7 @@ public abstract class AbstractEnumerator {
 
                         if (!congruentAttributesWithLabels) {
                             throw new PathDescriptionException(
-                                    element.getTypes().toString() + element.getAttributeMap().keySet().toString());
+                                    element.getTypes().toString() + element.getAttributeMap().keySet());
                         }
                         // Otherwise just don't add anything - keeps the original match.
                     } else {
@@ -277,8 +277,7 @@ public abstract class AbstractEnumerator {
         // TODO Find a more elegant way to solve this. Probably there should be a abstract
         // AbstractElement class. This requires, however, a modification in the gtop implementation.
 
-        if (element instanceof AbstractionEdge) {
-            AbstractionEdge absEdge = (AbstractionEdge) element;
+        if (element instanceof AbstractionEdge absEdge) {
 
             // Abstraction edge has no attributes
             if (absEdge.getAttributes() == null || absEdge.getAttributes().isEmpty()) {
@@ -287,7 +286,7 @@ public abstract class AbstractEnumerator {
 
             for (String attribute : expansionElement.getAttributeMap().keySet()) {
                 List<String> abstractAttributeList = absEdge.getAttributes().stream()
-                        .map(String::toLowerCase).collect(Collectors.toList());
+                        .map(String::toLowerCase).toList();
 
                 if (!abstractAttributeList.contains(attribute.toLowerCase())) {
                     // If the abstraction edge does not have one of the described
@@ -305,7 +304,7 @@ public abstract class AbstractEnumerator {
             }
 
             List<String> abstractAttributeList = absNode.getAttributes().stream()
-                    .map(String::toLowerCase).collect(Collectors.toList());
+                    .map(String::toLowerCase).toList();
 
             for (String attribute : expansionElement.getAttributeMap().keySet()) {
 
@@ -339,7 +338,7 @@ public abstract class AbstractEnumerator {
                 foundEquivalentEdge = gTopInter.getAbstractionEdgesByTypes(type);
                 if (foundEquivalentEdge != null) {
                     element.addMatchedGtopAbstractionEntities(
-                            foundEquivalentEdge.stream().map(x -> x).collect(Collectors.toList()));
+                            new ArrayList<>(foundEquivalentEdge));
                 }
             } else {
                 // It's a node:
@@ -347,14 +346,14 @@ public abstract class AbstractEnumerator {
 
                 if (foundEquivalentNode != null) {
                     element.addMatchedGtopAbstractionEntities(
-                            foundEquivalentNode.stream().map(x -> x).collect(Collectors.toList()));
+                            new ArrayList<>(foundEquivalentNode));
                 }
             }
 
             // wrong type given by the user on query time.
             if (foundEquivalentEdge == null && foundEquivalentNode == null) {
                 throw new PathDescriptionException(
-                        element.getTypes().toString() + element.getAttributeMap().keySet().toString());
+                        element.getTypes().toString() + element.getAttributeMap().keySet());
             }
         }
     }
@@ -390,7 +389,7 @@ public abstract class AbstractEnumerator {
 
                     // clone AbstractionChain:
                     List<AbstractionGraphComponent> sequentialAbstractionChainClone =
-                            sequentialAbstractionChain.stream().collect(Collectors.toList());
+                            new ArrayList<>(sequentialAbstractionChain);
 
                     sequentialAbstractionChainClone.add(edge);
                     sequentialAbstractionChainClone.add(node);
@@ -439,7 +438,7 @@ public abstract class AbstractEnumerator {
         List<AbstractionNode> nextNodeOnGtop = gTopInter.getNodesForEdge(edge);
         if (nextTraversedNode.isHintAvailable()) {
             List<AbstractionNode> hintNodes = nextTraversedNode.getMatchedGtopAbstractionEntities().stream()
-                    .map(obj -> (AbstractionNode) obj).collect(Collectors.toList());
+                    .map(obj -> (AbstractionNode) obj).toList();
 
             // Intersection of both lists
             nextNodeAbstractions = nextNodeOnGtop.stream().filter(hintNodes::contains).collect(Collectors.toList());
@@ -475,16 +474,16 @@ public abstract class AbstractEnumerator {
     private boolean selfRelationshipsAllowed(final AbstractionNode currentNode, final AbstractionEdge edge,
             final List<AbstractionNode> nextNodeAbstractions) {
         List<String> sourceTypes =
-                edge.getSourceType().stream().map(type -> type.toLowerCase()).collect(Collectors.toList());
+                edge.getSourceType().stream().map(String::toLowerCase).toList();
         List<String> destinationTypes =
-                edge.getDestinationType().stream().map(type -> type.toLowerCase()).collect(Collectors.toList());
+                edge.getDestinationType().stream().map(String::toLowerCase).toList();
         List<String> currentNodeTypes =
-                currentNode.getTypes().stream().map(type -> type.toLowerCase()).collect(Collectors.toList());
+                currentNode.getTypes().stream().map(String::toLowerCase).toList();
 
         boolean inBothLists = false;
 
-        if (sourceTypes.stream().anyMatch(node -> currentNodeTypes.contains(node))
-                && destinationTypes.stream().anyMatch(node -> currentNodeTypes.contains(node))) {
+        if (sourceTypes.stream().anyMatch(currentNodeTypes::contains)
+                && destinationTypes.stream().anyMatch(currentNodeTypes::contains)) {
             inBothLists = true;
         }
 
@@ -515,7 +514,7 @@ public abstract class AbstractEnumerator {
         // If next edge is undirected, add only undirected possibilities
         if (!routeEdge.isDirected()) {
             possibleEdgesOnGtop =
-                    possibleEdgesOnGtop.stream().collect(Collectors.toList());
+                    new ArrayList<>(possibleEdgesOnGtop);
         } else {
             // Otherwise, consider only directed possibilities
             possibleEdgesOnGtop =
@@ -524,7 +523,7 @@ public abstract class AbstractEnumerator {
 
         if (routeEdge.isHintAvailable()) {
             List<AbstractionEdge> hintEdges = routeEdge.getMatchedGtopAbstractionEntities().stream()
-                    .map(obj -> (AbstractionEdge) obj).collect(Collectors.toList());
+                    .map(obj -> (AbstractionEdge) obj).toList();
 
             // Intersection of both lists
             traversedEdges = possibleEdgesOnGtop.stream().filter(hintEdges::contains).collect(Collectors.toList());
@@ -564,7 +563,7 @@ public abstract class AbstractEnumerator {
 
         // use only the abstract sequences that match that route size:
         List<List<AbstractionGraphComponent>> possibleAbstractSequencesForThisRoute = possibleAbstractSequences.stream()
-                .filter(route -> route.size() == originalRoute.size()).collect(Collectors.toList());
+                .filter(route -> route.size() == originalRoute.size()).toList();
 
         List<List<ExpansionElement>> possibleRoutes = new ArrayList<>();
 

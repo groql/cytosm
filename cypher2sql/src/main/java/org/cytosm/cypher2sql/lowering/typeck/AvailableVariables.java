@@ -29,7 +29,7 @@ public class AvailableVariables {
 
     void extend(List<Var> newVariables) {
         availablesVariables = Stream.concat(availablesVariables.stream()
-                .filter(x -> newVariables.stream().allMatch(i -> !i.name.equals(x.name)))
+                .filter(x -> newVariables.stream().noneMatch(i -> i.name.equals(x.name)))
                 , newVariables.stream()).collect(Collectors.toList());
     }
 

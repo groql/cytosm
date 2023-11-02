@@ -1,6 +1,5 @@
 package org.cytosm.cypher2sql.utils;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.cytosm.cypher2sql.cypher.ast.Statement;
@@ -14,7 +13,7 @@ public final class ASTPrinter {
     private ASTPrinter() {}
 
     // TODO better way to define this? Instead of hard-coding the strings.
-    private static final List<String> NO_SPLIT = Arrays.asList("LabelName", "Variable", "PropertyKeyName",
+    private static final List<String> NO_SPLIT = List.of("LabelName", "Variable", "PropertyKeyName",
             "SignedDecimalIntegerLiteral", "RelTypeName", "StringLiteral", "UnsignedDecimalIntegerLiteral",
             "FunctionName", "count", "CountStar");
 
@@ -118,10 +117,6 @@ public final class ASTPrinter {
     }
 
     private static String getNTabs(final int tab) {
-        StringBuilder tabs = new StringBuilder();
-        for (int i = 0; i < tab; i++) {
-            tabs.append("\t");
-        }
-        return tabs.toString();
+        return "\t".repeat(Math.max(0, tab));
     }
 }

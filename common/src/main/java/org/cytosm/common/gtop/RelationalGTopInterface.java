@@ -13,6 +13,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.cytosm.common.gtop.abstraction.AbstractionEdge;
 import org.cytosm.common.gtop.abstraction.AbstractionNode;
+import org.cytosm.common.gtop.implementation.relational.Attribute;
 import org.cytosm.common.gtop.implementation.relational.ImplementationEdge;
 import org.cytosm.common.gtop.implementation.relational.ImplementationLevelGtop;
 import org.cytosm.common.gtop.implementation.relational.ImplementationNode;
@@ -147,7 +148,7 @@ public class RelationalGTopInterface extends GTopInterfaceImpl {
         }
         foundNodes = gtop
                 .getImplementationLevel().getImplementationNodes().stream().filter(node -> node.getTypes().stream()
-                        .map(String::toLowerCase).collect(Collectors.toList()).contains(type.toLowerCase()))
+                        .map(String::toLowerCase).toList().contains(type.toLowerCase()))
                 .collect(Collectors.toList());
 
         return foundNodes;
@@ -169,7 +170,7 @@ public class RelationalGTopInterface extends GTopInterfaceImpl {
 
         foundEdge = gtop
                 .getImplementationLevel().getImplementationEdges().stream().filter(edge -> edge.getTypes().stream()
-                        .map(String::toLowerCase).collect(Collectors.toList()).contains(type.toLowerCase()))
+                        .map(String::toLowerCase).toList().contains(type.toLowerCase()))
                 .collect(Collectors.toList());
 
         return foundEdge;
@@ -235,7 +236,7 @@ public class RelationalGTopInterface extends GTopInterfaceImpl {
 
     @Override
     public AbstractionNode createAbstractionNodeFromImplementation(final ImplementationNode node) {
-        List<String> attributsList = node.getAttributes().stream().map(attribute -> attribute.getAbstractionLevelName())
+        List<String> attributsList = node.getAttributes().stream().map(Attribute::getAbstractionLevelName)
                 .collect(Collectors.toList());
         return new AbstractionNode(node.getTypes(), attributsList);
     }
@@ -251,7 +252,7 @@ public class RelationalGTopInterface extends GTopInterfaceImpl {
         // Removes duplicates
         List<String> filteredAttributes = attributesList.stream().distinct().collect(Collectors.toList());
 
-        return new AbstractionEdge(edge.getTypes(), filteredAttributes, new ArrayList<String>(),
-                new ArrayList<String>(), false);
+        return new AbstractionEdge(edge.getTypes(), filteredAttributes, new ArrayList<>(),
+                new ArrayList<>(), false);
     }
 }

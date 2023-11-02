@@ -114,7 +114,7 @@ public class PopulateJoins {
         public void visitSimpleSelect(SimpleSelect simpleSelect) throws Cypher2SqlException {
             List<Relationship> rels = vars.getRelationships(simpleSelect.varId);
 
-            List<FromItem> fromItems = simpleSelect.fromItem.stream().collect(Collectors.toList());
+            List<FromItem> fromItems = simpleSelect.fromItem.stream().toList();
             for (Relationship rel: rels) {
 
                 FromItem leftNodeFi = fromItems.stream()
@@ -138,7 +138,7 @@ public class PopulateJoins {
                                    (hop.getDestinationTableName().equals(leftNodeOriginTableName) &&
                                     hop.getSourceTableName().equals(rightNodeOriginTableName));
                         })
-                        .collect(Collectors.toList());
+                        .toList();
 
 
                 if (edges.size() > 1) {
@@ -279,8 +279,7 @@ public class PopulateJoins {
             } else {
                 // We only expect to see a source of type SimpleSelect
                 // Unions should have bubbled up and be hidden.
-                if (origin.source.subquery instanceof SimpleSelect) {
-                    SimpleSelect source = (SimpleSelect) origin.source.subquery;
+                if (origin.source.subquery instanceof SimpleSelect source) {
 
                     Optional<FromItem> newSourceForVar = source.dependencies().stream()
                             .filter(varProvider -> varProvider.variables.stream().anyMatch(v -> v == var))

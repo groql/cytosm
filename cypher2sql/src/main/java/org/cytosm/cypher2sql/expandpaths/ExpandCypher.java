@@ -137,11 +137,11 @@ public final class ExpandCypher {
         Matcher matcher = pattern.matcher(query);
         while (matcher.find()) {
             if (matcher.group(0).contains(":")) {
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
                 sb.append(matcher.group(0));
                 sb.reverse();
                 int pos = sb.toString().lastIndexOf(":");
-                String variable = sb.toString().substring(pos + 1, sb.toString().indexOf("(", pos));
+                String variable = sb.substring(pos + 1, sb.toString().indexOf("(", pos));
                 if (variable.contains("=")) {
                     variable = variable.substring(0, variable.indexOf("="));
                 }

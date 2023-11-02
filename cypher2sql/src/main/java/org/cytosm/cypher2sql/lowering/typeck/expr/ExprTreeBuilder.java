@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Iterator;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  */
@@ -54,13 +53,11 @@ public class ExprTreeBuilder {
         @Override
         public Expr foldMapExpression(MapExpression expression) throws ExprTreeException {
             ExprTree.MapExpr res = new ExprTree.MapExpr();
-            Iterator<Pair<PropertyKeyName, Expression>> iter = expression.props.iterator();
-            while (iter.hasNext()) {
-                Pair<PropertyKeyName, Expression> val = iter.next();
+            for (Pair<PropertyKeyName, Expression> val : expression.props) {
                 if (res.props.containsKey(val.getKey().name)) {
                     LOGGER.warn("Property '" + val.getKey().name + "'" +
-                            " (offset: " + val.getKey().span.lo + ")" +
-                            " will be overridden.");
+                                " (offset: " + val.getKey().span.lo + ")" +
+                                " will be overridden.");
                 }
                 res.props.put(val.getKey().name, Walk.foldExpression(this, val.getValue()));
             }
@@ -173,9 +170,7 @@ public class ExprTreeBuilder {
             if (expression.default_.isPresent()) {
                 res.defaultExpr = Walk.foldExpression(this, expression.default_.get());
             }
-            Iterator<Pair<Expression, Expression>> iter = expression.alternatives.iterator();
-            while (iter.hasNext()) {
-                Pair<Expression, Expression> when = iter.next();
+            for (Pair<Expression, Expression> when : expression.alternatives) {
                 Expr whenExpr = Walk.foldExpression(this, when.getKey());
                 Expr thenExpr = Walk.foldExpression(this, when.getValue());
                 res.whenExprs.add(new ImmutablePair<>(whenExpr, thenExpr));

@@ -16,10 +16,10 @@ public class PopulateJoinsTests extends BaseLDBCTests {
 
     @Test
     public void testPopulateJoins() throws Exception {
-        String cypher = "" +
-                "MATCH (a:Person {id: 0})\n" +
-                "OPTIONAL MATCH (a)<-[:KNOWS]-(b:Person)\n" +
-                "RETURN a.firstName, b.firstName";
+        String cypher = """
+                MATCH (a:Person {id: 0})
+                OPTIONAL MATCH (a)<-[:KNOWS]-(b:Person)
+                RETURN a.firstName, b.firstName""";
 
         ScopeSelect tree = fromBeginningUntilpopulateJoins(cypher);
 
@@ -53,10 +53,10 @@ public class PopulateJoinsTests extends BaseLDBCTests {
 
     @Test
     public void testPopulateJoinsReuseBothInFrom() throws Exception {
-        String cypher = "" +
-                "MATCH (a:Person)<-[:KNOWS]-(b:Person)\n" +
-                "MATCH (a)-[:KNOWS]->(b)\n" +
-                "RETURN a.firstName, b.firstName";
+        String cypher = """
+                MATCH (a:Person)<-[:KNOWS]-(b:Person)
+                MATCH (a)-[:KNOWS]->(b)
+                RETURN a.firstName, b.firstName""";
 
         ScopeSelect tree = fromBeginningUntilpopulateJoins(cypher);
 

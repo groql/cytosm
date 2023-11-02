@@ -1,11 +1,11 @@
 package org.cytosm.pathfinder.enumerators;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
-import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -58,7 +58,7 @@ public class DirectedEnumerator extends AbstractEnumerator {
 
         ((ExpansionNode) route.get(0)).setSource(true);
         enumerateRoutes(route);
-        possibleAbstractSequences = enumeratedPaths.values().stream().flatMap(list -> list.stream()).collect(Collectors.toList());
+        possibleAbstractSequences = enumeratedPaths.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
 
         // Clean up not possible paths:
         // TODO Check if required
@@ -114,8 +114,8 @@ public class DirectedEnumerator extends AbstractEnumerator {
     protected void reportPossibleAbstractSequence(final List<ExpansionElement> originalRoute,
             final List<AbstractionGraphComponent> sequentialAbstractionChain) {
         // find source node
-        ExpansionNode sourceNode = originalRoute.stream().filter(element -> element.isNode())
-                .map(node -> (ExpansionNode) node).filter(node -> node.isSource()).findFirst().get();
+        ExpansionNode sourceNode = originalRoute.stream().filter(ExpansionElement::isNode)
+                .map(node -> (ExpansionNode) node).filter(ExpansionNode::isSource).findFirst().get();
 
         List<List<AbstractionGraphComponent>> listOfRoutes = enumeratedPaths.get(sourceNode);
 

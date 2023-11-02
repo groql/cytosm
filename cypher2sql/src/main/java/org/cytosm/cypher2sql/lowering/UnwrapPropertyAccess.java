@@ -80,12 +80,9 @@ public class UnwrapPropertyAccess {
             if (expr.expression instanceof ExprTree.MapExpr) {
                 return ((ExprTree.MapExpr) expr.expression).props.get(expr.propertyAccessed);
 
-            } else if (expr.expression instanceof ExprVar) {
-                ExprVar exprVar = (ExprVar) expr.expression;
+            } else if (expr.expression instanceof ExprVar exprVar) {
 
-                if (exprVar.var instanceof AliasVar) {
-
-                    AliasVar aliasVar = (AliasVar) exprVar.var;
+                if (exprVar.var instanceof AliasVar aliasVar) {
 
                     if (aliasVar.type() instanceof VarType) {
                         return new ExprTree.PropertyAccess(expr.propertyAccessed, exprVar);

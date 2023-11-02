@@ -9,7 +9,6 @@ import org.cytosm.cypher2sql.lowering.typeck.expr.ExprVar;
 import org.cytosm.cypher2sql.lowering.typeck.var.AliasVar;
 import org.cytosm.cypher2sql.lowering.typeck.var.NodeVar;
 import org.cytosm.cypher2sql.lowering.typeck.expr.Expr;
-import org.cytosm.cypher2sql.lowering.typeck.var.Var;
 import org.cytosm.cypher2sql.lowering.typeck.expr.ExprTree;
 import org.cytosm.cypher2sql.lowering.typeck.expr.ExprWalk;
 
@@ -101,14 +100,11 @@ public class ComputeExports {
 
         @Override
         public void visitPropertyAccess(ExprTree.PropertyAccess expr) {
-            if (expr.expression instanceof ExprVar) {
-                ExprVar exprVar = (ExprVar) expr.expression;
-                if (exprVar.var instanceof NodeVar) {
-                    NodeVar node = (NodeVar) exprVar.var;
+            if (expr.expression instanceof ExprVar exprVar) {
+                if (exprVar.var instanceof NodeVar node) {
                     node.propertiesRequired.add(expr.propertyAccessed);
                     return;
-                } else if (exprVar.var instanceof AliasVar) {
-                    AliasVar alias = (AliasVar) exprVar.var;
+                } else if (exprVar.var instanceof AliasVar alias) {
                     visitPropertyAccess(new ExprTree.PropertyAccess(expr.propertyAccessed, alias.aliased));
                     return;
                 }

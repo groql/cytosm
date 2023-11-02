@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -550,19 +549,16 @@ public class ConstExpressionFolder implements Walk.ExpressionFolder<ConstExpress
     }
     public ConstExprValue foldListExpression(final ListExpression expression) throws ConstExprException {
         List<ConstExprValue> res = new ArrayList<>();
-        Iterator<Expression> iter = expression.exprs.iterator();
-        while (iter.hasNext()) {
-            res.add(Walk.foldExpression(this, iter.next()));
+        for (Expression value : expression.exprs) {
+            res.add(Walk.foldExpression(this, value));
         }
         return new ConstList(res);
     }
     public ConstExprValue foldMapExpression(final MapExpression expression) throws ConstExprException {
 
         HashMap<String, ConstExprValue> res = new HashMap<>();
-        Iterator<Pair<PropertyKeyName, Expression>> iter = expression.props.iterator();
-        while (iter.hasNext()) {
+        for (Pair<PropertyKeyName, Expression> prop : expression.props) {
             // TODO: Handle the case when the property is already present.
-            Pair<PropertyKeyName, Expression> prop = iter.next();
             res.put(prop.getKey().name, Walk.foldExpression(this, prop.getValue()));
         }
         return new ConstMap(res);
