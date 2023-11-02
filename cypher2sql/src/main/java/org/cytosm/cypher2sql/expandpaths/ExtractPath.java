@@ -96,18 +96,18 @@ public class ExtractPath {
         for (PathPlusHints pathAndHint : matches) {
             final Map<String, Set<String>> hintsOnPath = pathAndHint.getHints();
 
-            returnHints.entrySet().forEach(variableHint -> {
+            returnHints.forEach((key, value) -> {
 
                 Set<String> hintsOnThatVariable = null;
-                if (hintsOnPath.containsKey(variableHint.getKey())) {
-                    hintsOnThatVariable = hintsOnPath.get(variableHint.getKey());
+                if (hintsOnPath.containsKey(key)) {
+                    hintsOnThatVariable = hintsOnPath.get(key);
                 } else {
                     hintsOnThatVariable = new LinkedHashSet<>();
                 }
 
-                hintsOnThatVariable.addAll(variableHint.getValue());
+                hintsOnThatVariable.addAll(value);
 
-                hintsOnPath.put(variableHint.getKey(), hintsOnThatVariable);
+                hintsOnPath.put(key, hintsOnThatVariable);
             });
         }
     }

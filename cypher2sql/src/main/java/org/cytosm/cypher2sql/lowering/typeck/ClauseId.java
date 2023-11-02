@@ -38,13 +38,12 @@ public class ClauseId implements Comparable<ClauseId> {
 
     @Override
     public String toString() {
-        switch (this.kind) {
-            case MATCH:   return "MATCH (offset: " + index + ")";
-            case WITH:    return "WITH (offset: " + index + ")";
-            case RETURN:  return "RETURN (offset: " + index + ")";
-            case UNKNOWN: return "UNKNOWN (offset: " + index + ")";
-        }
-        throw new RuntimeException("Unreachable code! Thanks static analysis...");
+        return switch (this.kind) {
+            case MATCH -> "MATCH (offset: " + index + ")";
+            case WITH -> "WITH (offset: " + index + ")";
+            case RETURN -> "RETURN (offset: " + index + ")";
+            case UNKNOWN -> "UNKNOWN (offset: " + index + ")";
+        };
     }
 
     @Override

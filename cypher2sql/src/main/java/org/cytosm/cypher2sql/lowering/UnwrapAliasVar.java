@@ -51,8 +51,7 @@ public class UnwrapAliasVar {
 
         @Override
         public Expr foldVariable(ExprVar expr) throws Cypher2SqlException {
-            if (expr.var instanceof AliasVar) {
-                AliasVar var = (AliasVar) expr.var;
+            if (expr.var instanceof AliasVar var) {
                 if (var.type() instanceof NumberType ||
                         var.type() instanceof StringType ||
                         var.type() instanceof BoolType) {

@@ -19,8 +19,6 @@ import org.cytosm.cypher2sql.cypher.ast.clause.match.pattern.RelationshipPattern
 import org.cytosm.cypher2sql.cypher.ast.clause.match.pattern.*;
 import org.cytosm.cypher2sql.cypher.ast.expression.*;
 
-import java.util.Iterator;
-
 /***
  * Converts from Cypher to {@link CanonicalRoutes}.
  *
@@ -177,10 +175,8 @@ public class CypherConverter extends CanonicalConverter {
 
     private List<ExpansionElement> extractElements(final Pattern relationshipChain) {
         List<ExpansionElement> res = new ArrayList<>(5);
-        Iterator<PatternPart> iter = relationshipChain.patternParts.iterator();
 
-        while (iter.hasNext()) {
-            PatternPart pp = iter.next();
+        for (PatternPart pp : relationshipChain.patternParts) {
             extractElementsRec(pp.element, res);
         }
 
@@ -226,9 +222,8 @@ public class CypherConverter extends CanonicalConverter {
             res.forEach((key, val) -> attributes.put(key, val.toString()));
         }
 
-        Iterator<LabelName> iter = node.labels.iterator();
-        while (iter.hasNext()) {
-            typesList.add(iter.next().name);
+        for (LabelName labelName : node.labels) {
+            typesList.add(labelName.name);
         }
 
         String variable = "";

@@ -29,7 +29,7 @@ public class ImplementationLevelGtop {
     /***
      * Default constructor.
      */
-    public ImplementationLevelGtop() {};
+    public ImplementationLevelGtop() {}
 
     /***
      * Generates an implementation level gtop.

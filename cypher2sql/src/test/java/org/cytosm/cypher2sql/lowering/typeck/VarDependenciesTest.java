@@ -111,11 +111,11 @@ public class VarDependenciesTest extends BaseVarTests {
 
     @Test
     public void testVariablesHiddenInMapExpression1() {
-        String cypher = "" +
-                "MATCH (a:Person)\n" +
-                "WITH a, {b: {c: \"test\", d: a.firstName}} AS b\n" +
-                "MATCH (c:Person) WHERE c.firstName = b.b.c\n" +
-                "RETURN a, b, c";
+        String cypher = """
+                MATCH (a:Person)
+                WITH a, {b: {c: "test", d: a.firstName}} AS b
+                MATCH (c:Person) WHERE c.firstName = b.b.c
+                RETURN a, b, c""";
         Statement st = PassAvailables.parseCypher(cypher);
         SingleQuery sq = (SingleQuery) st.query.part;
         VarDependencies dependencies = new VarDependencies(st);
@@ -196,11 +196,11 @@ public class VarDependenciesTest extends BaseVarTests {
 
     @Test
     public void testGetUsedAndIndirectUsedVars1() {
-        String cypher = "" +
-                "MATCH (a)--(b)\n" +
-                "MATCH (b)--(c)\n" +
-                "MATCH (a)--(d)\n" +
-                "RETURN 42";
+        String cypher = """
+                MATCH (a)--(b)
+                MATCH (b)--(c)
+                MATCH (a)--(d)
+                RETURN 42""";
         Statement st = PassAvailables.parseCypher(cypher);
         SingleQuery sq = (SingleQuery) st.query.part;
         VarDependencies dependencies = new VarDependencies(st);
@@ -220,11 +220,11 @@ public class VarDependenciesTest extends BaseVarTests {
 
     @Test
     public void testGetUsedAndIndirectUsedVars2() {
-        String cypher = "" +
-                "MATCH (a)--(e)\n" +
-                "MATCH (b)--(c)\n" +
-                "MATCH (a)--(d)\n" +
-                "RETURN 42";
+        String cypher = """
+                MATCH (a)--(e)
+                MATCH (b)--(c)
+                MATCH (a)--(d)
+                RETURN 42""";
         Statement st = PassAvailables.parseCypher(cypher);
         SingleQuery sq = (SingleQuery) st.query.part;
         VarDependencies dependencies = new VarDependencies(st);
@@ -251,17 +251,17 @@ public class VarDependenciesTest extends BaseVarTests {
         SingleQuery sq = (SingleQuery) st.query.part;
         VarDependencies deps = new VarDependencies(st);
         AvailableVariables ret = deps.getReachableVars(new ClauseId(sq.clauses.get(1)));
-        List<Var> allVars = deps.getAllVariables().stream().collect(Collectors.toList());
+        List<Var> allVars = new ArrayList<>(deps.getAllVariables());
         Assertions.assertFalse(ret.get("b").isPresent());
         Assertions.assertNotNull(getByName(allVars, "b"));
     }
 
     @Test
     public void testReachableVarsInOrderBy() {
-        String cypher = "" +
-                "MATCH (a)\n" +
-                "WITH a.firstName AS foo ORDER BY foo\n" +
-                "RETURN foo";
+        String cypher = """
+                MATCH (a)
+                WITH a.firstName AS foo ORDER BY foo
+                RETURN foo""";
         Statement st = PassAvailables.parseCypher(cypher);
         SingleQuery sq = (SingleQuery) st.query.part;
         VarDependencies deps = new VarDependencies(st);

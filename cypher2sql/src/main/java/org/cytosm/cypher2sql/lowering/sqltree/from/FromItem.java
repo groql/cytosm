@@ -2,7 +2,6 @@ package org.cytosm.cypher2sql.lowering.sqltree.from;
 
 import org.cytosm.cypher2sql.lowering.sqltree.WithSelect;
 import org.cytosm.cypher2sql.lowering.typeck.NameProvider;
-import org.cytosm.cypher2sql.lowering.typeck.var.NodeOrTempOrRelVar;
 import org.cytosm.cypher2sql.lowering.typeck.var.Var;
 
 import java.util.ArrayList;

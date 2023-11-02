@@ -7,6 +7,7 @@ import org.cytosm.cypher2sql.lowering.typeck.var.Var;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,7 @@ public class NamingTests extends BaseVarTests {
         SingleQuery sq = (SingleQuery) st.query.part;
         VarDependencies dependencies = new VarDependencies(st);
 
-        List<Var> vars = dependencies.getAllVariables().stream().collect(Collectors.toList());
+        List<Var> vars = new ArrayList<>(dependencies.getAllVariables());
 
         Assertions.assertEquals(5, vars.size());
         Assertions.assertEquals("__cytosm6$7", getByName(vars, "p").uniqueName);

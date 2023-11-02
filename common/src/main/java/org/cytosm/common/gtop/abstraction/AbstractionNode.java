@@ -14,8 +14,8 @@ public class AbstractionNode extends AbstractionGraphComponent {
      * Generates an empty abstraction node.
      */
     public AbstractionNode() {
-        types = new ArrayList<String>();
-        attributes = new ArrayList<String>();
+        types = new ArrayList<>();
+        attributes = new ArrayList<>();
     }
 
     /**

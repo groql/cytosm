@@ -21,7 +21,7 @@ public class PathSerializer implements Serializer {
     public List<String> serialize(final List<List<ExpansionElement>> routes) {
         // ()-[:knows]->()
         List<String> paths = new ArrayList<>();
-        routes.stream().forEach((expansionList) -> {
+        routes.forEach((expansionList) -> {
             StringBuilder sb = new StringBuilder();
             expansionList.forEach((expansion) -> {
                 if (expansion.isNode()) {
@@ -72,16 +72,16 @@ public class PathSerializer implements Serializer {
         if (!expansion.getAttributeMap().isEmpty()) {
             StringBuilder attributes = new StringBuilder();
             StringBuilder attribute = new StringBuilder();
-            expansion.getAttributeMap().entrySet().forEach((entry) -> {
-                if (!StringUtils.isEmpty(entry.getValue())) {
-                    if (attribute.length() != 0) {
+            expansion.getAttributeMap().forEach((key, value) -> {
+                if (!StringUtils.isEmpty(value)) {
+                    if (!attribute.isEmpty()) {
                         attribute.append(",");
                     }
-                    attribute.append(entry.getKey() + ":" + entry.getValue());
+                    attribute.append(key).append(":").append(value);
                 }
             });
 
-            if (attribute.length() != 0) {
+            if (!attribute.isEmpty()) {
                 attributes.append(" {");
                 attributes.append(attribute);
                 attributes.append("}");

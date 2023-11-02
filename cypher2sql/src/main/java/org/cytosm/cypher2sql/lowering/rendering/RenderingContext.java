@@ -160,8 +160,7 @@ public class RenderingContext {
             } else {
                 return fromItem.sourceVariableName + "." + var.uniqueName + "_" + propertyAccessed;
             }
-        } else if (var instanceof AliasVar) {
-            AliasVar aliasVar = (AliasVar) var;
+        } else if (var instanceof AliasVar aliasVar) {
             var = AliasVar.resolveAliasVar(aliasVar);
             src = getSource(var);
             if (src.isPresent()) {

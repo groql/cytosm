@@ -14,9 +14,10 @@ public class SelectTreeBuilderTests {
 
     @Test
     public void testStructure() {
-        String cypher = "MATCH (a)\n" +
-                "MATCH (a)\n" +
-                "RETURN a.firstName;";
+        String cypher = """
+                MATCH (a)
+                MATCH (a)
+                RETURN a.firstName;""";
         ScopeSelect tree = PassAvailables.buildQueryTree(cypher);
         Assertions.assertEquals(tree.ret.limit, -1);
         Assertions.assertEquals(tree.ret.skip, -1);
@@ -74,9 +75,10 @@ public class SelectTreeBuilderTests {
 
     @Test
     public void testOptionalMatchNormalMatch() {
-        String cypher = "MATCH (a:Person {id: 0})\n" +
-                "OPTIONAL MATCH (a)-[:KNOWS]-(b:Person)\n" +
-                "RETURN a.firstName, b.firstName";
+        String cypher = """
+                MATCH (a:Person {id: 0})
+                OPTIONAL MATCH (a)-[:KNOWS]-(b:Person)
+                RETURN a.firstName, b.firstName""";
         ScopeSelect tree = PassAvailables.buildQueryTree(cypher);
         Assertions.assertEquals(tree.withQueries.size(), 2);
         Assertions.assertInstanceOf(SimpleSelectWithInnerJoins.class, tree.withQueries.get(0).subquery);

@@ -44,6 +44,6 @@ public class PathPlusHintsVisitors {
         ClauseVisitor matchVisitor = new ClauseVisitor(originalCypher);
         matchVisitor.parseClause(clause);
         matches.addAll(matchVisitor.relationshipchains.stream()
-                .map(PathPlusHints::new).collect(Collectors.toList()));
+                .map(PathPlusHints::new).toList());
     }
 }

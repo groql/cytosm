@@ -19,10 +19,10 @@ public class ComputeFromItemsTests {
 
     @Test
     public void testComputeFromItemsWithIndirectDependencies() throws Exception {
-        String cypher = "" +
-                "MATCH (a)--(b)\n" +
-                "MATCH (b)--(c)\n" +
-                "RETURN a.firstName";
+        String cypher = """
+                MATCH (a)--(b)
+                MATCH (b)--(c)
+                RETURN a.firstName""";
         ScopeSelect tree = computeFromItems(cypher);
 
         Assertions.assertEquals(1, tree.ret.fromItem.size());
@@ -46,11 +46,11 @@ public class ComputeFromItemsTests {
 
     @Test
     public void testComputeFromItemsOnWeirdIndirectDependencies() throws Exception {
-        String cypher = "" +
-                "MATCH (a)--(b)\n" +
-                "WITH a, {b:{d:b}} AS h\n" +
-                "MATCH (a)--(c)\n" +
-                "RETURN h.b.d.firstName";
+        String cypher = """
+                MATCH (a)--(b)
+                WITH a, {b:{d:b}} AS h
+                MATCH (a)--(c)
+                RETURN h.b.d.firstName""";
         ScopeSelect tree = computeFromItems(cypher);
 
         Assertions.assertEquals(1, tree.ret.fromItem.size());
@@ -61,11 +61,11 @@ public class ComputeFromItemsTests {
         // This example is problematic
         // because an AliasVar might actually be propagated through
         // two FromItem.
-        String cypher = "" +
-                "MATCH (a)\n" +
-                "MATCH (b)\n" +
-                "WITH {a: a, b: b} AS d\n" +
-                "RETURN d";
+        String cypher = """
+                MATCH (a)
+                MATCH (b)
+                WITH {a: a, b: b} AS d
+                RETURN d""";
         ScopeSelect tree = computeFromItems(cypher);
 
         WithSelect match0 = tree.withQueries.get(0);
@@ -92,10 +92,10 @@ public class ComputeFromItemsTests {
 
     @Test
     public void testComputeFromItemsWhenInPresenceOfAliases() throws Exception {
-        String cypher = "" +
-                "MATCH (a)\n" +
-                "WITH a AS b\n" +
-                "RETURN b.firstName";
+        String cypher = """
+                MATCH (a)
+                WITH a AS b
+                RETURN b.firstName""";
         ScopeSelect tree = computeFromItems(cypher);
 
 
@@ -119,12 +119,12 @@ public class ComputeFromItemsTests {
 
     @Test
     public void testComputeFromItemsWithManyAliases() throws Exception {
-        String cypher = "" +
-                "MATCH (a)\n" +
-                "WITH a AS b\n" +
-                "MATCH (b)--(c)\n" +
-                "WITH c AS b\n" +
-                "RETURN b.firstName";
+        String cypher = """
+                MATCH (a)
+                WITH a AS b
+                MATCH (b)--(c)
+                WITH c AS b
+                RETURN b.firstName""";
         ScopeSelect tree = computeFromItems(cypher);
 
         WithSelect match0 = tree.withQueries.get(0);

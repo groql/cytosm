@@ -1,6 +1,7 @@
 package org.cytosm.pathfinder.enumerators;
 
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
@@ -113,7 +114,7 @@ public class EnumeratorFilter {
 
             int hash = generateHashFromRoute(route);
 
-            List<ExpansionElement> reverseRoute = route.stream().collect(Collectors.toList());
+            List<ExpansionElement> reverseRoute = new ArrayList<>(route);
             Collections.reverse(reverseRoute);
 
             // to make it symmetric, it is required to invert the edge directions:
@@ -171,7 +172,7 @@ public class EnumeratorFilter {
         for (List<ExpansionElement> route : distinctList) {
             int hash = generateHashFromRoute(route);
 
-            List<ExpansionElement> reverseRoute = route.stream().collect(Collectors.toList());
+            List<ExpansionElement> reverseRoute = new ArrayList<>(route);
             Collections.reverse(reverseRoute);
 
             int reverseHash = generateHashFromRoute(reverseRoute);
@@ -231,6 +232,6 @@ public class EnumeratorFilter {
      * @return list of results
      */
     public List<List<ExpansionElement>> collectResults() {
-        return solvedRoutesMap.values().stream().collect(Collectors.toList());
+        return new ArrayList<>(solvedRoutesMap.values());
     }
 }

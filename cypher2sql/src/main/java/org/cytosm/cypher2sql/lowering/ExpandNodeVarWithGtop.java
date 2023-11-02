@@ -9,6 +9,7 @@ import org.cytosm.cypher2sql.lowering.sqltree.*;
 import org.cytosm.cypher2sql.lowering.sqltree.from.FromItem;
 import org.cytosm.cypher2sql.lowering.sqltree.visitor.Walk;
 import org.cytosm.cypher2sql.lowering.typeck.var.NodeVar;
+import org.cytosm.cypher2sql.lowering.typeck.var.Var;
 
 import static org.cytosm.cypher2sql.lowering.exceptions.fns.LambdaExceptionUtil.rethrowIntFunction;
 
@@ -96,7 +97,7 @@ public class ExpandNodeVarWithGtop {
                 // If the fromItem has already a source
                 // we add it and continue the iteration.
                 if (fromItem.source != null) {
-                    possibilities.add(Collections.singletonList(fromItem));
+                    possibilities.add(List.of(fromItem));
                     continue;
                 }
 
@@ -104,7 +105,7 @@ public class ExpandNodeVarWithGtop {
                 List<NodeVar> vars = fromItem.variables.stream()
                         .filter(v -> v instanceof NodeVar)
                         .map(v -> (NodeVar) v)
-                        .collect(Collectors.toList());
+                        .toList();
 
                 // If we have just one variable then we might
                 // generate
@@ -132,7 +133,7 @@ public class ExpandNodeVarWithGtop {
                     if (implNodes.size() == 1) {
                         // Then we simply set the source for the tableName.
                         fromItem.sourceTableName = implNodes.iterator().next().getTableName();
-                        possibilities.add(Collections.singletonList(fromItem));
+                        possibilities.add(List.of(fromItem));
                     } else {
                         // Otherwise transform into as many as needed FromItem
                         // that points to the correct table.
@@ -146,7 +147,7 @@ public class ExpandNodeVarWithGtop {
 
 
                 } else {
-                    possibilities.add(Collections.singletonList(fromItem));
+                    possibilities.add(List.of(fromItem));
                 }
             }
 
@@ -284,9 +285,8 @@ public class ExpandNodeVarWithGtop {
 
                 WithSelect newWith;
 
-                if (oldWith.subquery instanceof UnionSelect) {
+                if (oldWith.subquery instanceof UnionSelect nestedUnion) {
 
-                    UnionSelect nestedUnion = (UnionSelect) oldWith.subquery;
                     int n = (selectId / j) % nestedUnion.unions.size();
                     newWith = new WithSelect(shallowClone((SimpleSelect) nestedUnion.unions.get(n), true));
 
@@ -359,8 +359,11 @@ public class ExpandNodeVarWithGtop {
             SimpleSelect res = shallowClone(oldReturn, false);
             FromItem fetchFrom = new FromItem();
             fetchFrom.source = wrappedUnion;
-            fetchFrom.variables = oldReturn.fromItem.stream().flatMap(fi -> fi.variables.stream())
-                    .collect(Collectors.toSet()).stream().collect(Collectors.toList());
+            Set<Var> set = new HashSet<>();
+            for (FromItem fi : oldReturn.fromItem) {
+                set.addAll(fi.variables);
+            }
+            fetchFrom.variables = new ArrayList<>(set);
             res.fromItem.add(fetchFrom);
             return res;
         }
@@ -387,7 +390,7 @@ public class ExpandNodeVarWithGtop {
             newInstance.orderBy = select.orderBy;
             newInstance.whereCondition = select.whereCondition;
             if (includeFroms) {
-                newInstance.fromItem = select.fromItem.stream().collect(Collectors.toList());
+                newInstance.fromItem = new ArrayList<>(select.fromItem);
             }
             return newInstance;
         } catch (InstantiationException e) {

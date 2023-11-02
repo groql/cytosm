@@ -140,7 +140,7 @@ public abstract class GTopInterfaceImpl implements GTopInterface {
 
         edgeList = gtop
                 .getAbstractionLevel().getAbstractionEdges().stream().filter(edge -> edge.getTypes().stream()
-                        .map(String::toLowerCase).collect(Collectors.toList()).contains(typeLower))
+                        .map(String::toLowerCase).toList().contains(typeLower))
                 .collect(Collectors.toList());
 
         return edgeList;
@@ -156,15 +156,12 @@ public abstract class GTopInterfaceImpl implements GTopInterface {
     @JsonIgnore
     public List<AbstractionNode> getAbstractionNodesByTypes(final String types) {
 
-        List<AbstractionNode> nodeList = new ArrayList<>();
         String typeLower = types.toLowerCase();
 
-        nodeList = gtop
+        return gtop
                 .getAbstractionLevel().getAbstractionNodes().stream().filter(node -> node.getTypes().stream()
-                        .map(String::toLowerCase).collect(Collectors.toList()).contains(typeLower))
+                        .map(String::toLowerCase).toList().contains(typeLower))
                 .collect(Collectors.toList());
-
-        return nodeList;
     }
 
     /***
@@ -176,15 +173,12 @@ public abstract class GTopInterfaceImpl implements GTopInterface {
     @Override
     @JsonIgnore
     public List<AbstractionNode> findNodeAbstractions(final ImplementationNode node) {
-        List<AbstractionNode> abstractions = new ArrayList<>();
 
         // if the abstraction matches any of the implementation level types, append to list.
-        abstractions = gtop.getAbstractionLevel().getAbstractionNodes().stream()
+
+        return gtop.getAbstractionLevel().getAbstractionNodes().stream()
                 .filter(filteredNode -> !Collections.disjoint(filteredNode.getTypes(), node.getTypes()))
                 .collect(Collectors.toList());
-
-
-        return abstractions;
     }
 
     /**

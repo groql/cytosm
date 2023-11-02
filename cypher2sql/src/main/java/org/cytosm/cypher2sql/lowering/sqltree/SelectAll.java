@@ -1,7 +1,6 @@
 package org.cytosm.cypher2sql.lowering.sqltree;
 
 import org.cytosm.cypher2sql.lowering.rendering.RenderingContext;
-import org.cytosm.cypher2sql.lowering.rendering.RenderingHelper;
 import org.cytosm.cypher2sql.lowering.sqltree.from.FromItem;
 import org.cytosm.cypher2sql.lowering.sqltree.join.BaseJoin;
 

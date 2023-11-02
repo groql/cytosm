@@ -108,7 +108,7 @@ public class CanonicalRoutes {
     private void glueAllExpadedEdgesPossibilities(int currentAnalysedPosition, List<ExpansionElement> originalRoute) {
 
         // The list needs to be duplicated, to avoid changing the original route
-        List<ExpansionElement> thisIterationRoute = originalRoute.stream().collect(Collectors.toList());
+        List<ExpansionElement> thisIterationRoute = new ArrayList<>(originalRoute);
 
         List<ExpansionElement> newRouteAfterEdgeExpansion = new ArrayList<>();
 
@@ -124,8 +124,7 @@ public class CanonicalRoutes {
             // current element being analysed:
             ExpansionElement edgeOrNode = thisIterationRoute.get(currentAnalysedPosition);
 
-            if (edgeOrNode instanceof ExpansionEdge) {
-                ExpansionEdge analysedEdge = (ExpansionEdge) edgeOrNode;
+            if (edgeOrNode instanceof ExpansionEdge analysedEdge) {
 
                 /*
                  * check if this edge was expanded, and glue all possibilities on its place. The
@@ -179,7 +178,7 @@ public class CanonicalRoutes {
             List<ExpansionElement> expansionPath, List<ExpansionElement> thisIterationRoute) {
 
         // clones to not change the original object
-        List<ExpansionElement> gluedRoute = thisIterationRoute.stream().collect(Collectors.toList());
+        List<ExpansionElement> gluedRoute = new ArrayList<>(thisIterationRoute);
 
         // since the left node was also removed
         int insertPosition = currentAnalysedPosition - 1;

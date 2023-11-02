@@ -3,7 +3,6 @@ package org.cytosm.cypher2sql.lowering.typeck;
 import org.cytosm.cypher2sql.cypher.ast.ASTNode;
 import org.cytosm.cypher2sql.cypher.ast.clause.match.pattern.NamedPatternPart;
 import org.cytosm.cypher2sql.cypher.ast.clause.match.pattern.NodePattern;
-import org.cytosm.cypher2sql.cypher.ast.clause.match.pattern.PatternPart;
 import org.cytosm.cypher2sql.cypher.ast.clause.match.pattern.RelationshipPattern;
 import org.cytosm.cypher2sql.cypher.ast.clause.projection.ReturnItem;
 import org.cytosm.cypher2sql.cypher.ast.expression.Variable;
@@ -29,8 +28,7 @@ public class NameProvider {
 
     public static String getUniqueName(ASTNode n) {
         Variable var;
-        if (n instanceof NodePattern) {
-            NodePattern np = (NodePattern) n;
+        if (n instanceof NodePattern np) {
             if (np.variable.isPresent()) {
                 var = np.variable.get();
             } else {

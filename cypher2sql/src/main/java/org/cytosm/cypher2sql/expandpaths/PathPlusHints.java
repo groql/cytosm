@@ -67,9 +67,9 @@ public class PathPlusHints {
      */
     public Map<String, List<String>> getHintsIntoList() {
         Map<String, List<String>> result = new HashMap<>();
-        this.hints.entrySet().forEach(entry -> {
-            List<String> value = new ArrayList<>(entry.getValue());
-            result.put(entry.getKey(), value);
+        this.hints.forEach((key, value1) -> {
+            List<String> value = new ArrayList<>(value1);
+            result.put(key, value);
         });
         return result;
     }

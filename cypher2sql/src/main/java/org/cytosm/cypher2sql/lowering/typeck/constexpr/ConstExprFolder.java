@@ -1,11 +1,9 @@
 package org.cytosm.cypher2sql.lowering.typeck.constexpr;
 
 import org.cytosm.cypher2sql.lowering.exceptions.Cypher2SqlException;
-import org.cytosm.cypher2sql.lowering.typeck.expr.ExprTree;
 import org.cytosm.cypher2sql.lowering.typeck.expr.ExprVar;
 import org.cytosm.cypher2sql.lowering.typeck.types.MapType;
 import org.cytosm.cypher2sql.lowering.typeck.var.AliasVar;
-import org.cytosm.cypher2sql.lowering.typeck.var.Var;
 import org.cytosm.cypher2sql.lowering.typeck.expr.ExprFn;
 import org.cytosm.cypher2sql.lowering.typeck.expr.ExprTree.*;
 import org.cytosm.cypher2sql.lowering.typeck.expr.ExprWalk;
@@ -72,10 +70,8 @@ public class ConstExprFolder implements ExprWalk.Folder<ConstVal.Literal, Cypher
         if (expr.expression instanceof MapExpr) {
             MapExpr map = (MapExpr) expr.expression;
             return ExprWalk.fold(this, map.props.get(expr.propertyAccessed));
-        } else if (expr.expression instanceof ExprVar) {
-            ExprVar exprVar = (ExprVar) expr.expression;
-            if (exprVar.var instanceof AliasVar) {
-                AliasVar var = (AliasVar) exprVar.var;
+        } else if (expr.expression instanceof ExprVar exprVar) {
+            if (exprVar.var instanceof AliasVar var) {
                 if (var.type() instanceof MapType) {
                     var = (AliasVar) AliasVar.resolveAliasVar(var);
                     MapExpr map = (MapExpr) var.aliased;

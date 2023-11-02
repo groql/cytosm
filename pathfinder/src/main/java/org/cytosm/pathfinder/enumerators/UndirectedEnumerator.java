@@ -100,7 +100,7 @@ public class UndirectedEnumerator extends AbstractEnumerator {
                 .filter(sequence -> sequence.size() == route.size()).collect(Collectors.toList());
 
         // Make sure the traversal are valid on gtop perpective
-        possibleAbstractSequences = possibleAbstractSequences.stream().filter(sequence -> validGtopSequence(sequence))
+        possibleAbstractSequences = possibleAbstractSequences.stream().filter(this::validGtopSequence)
                 .collect(Collectors.toList());
     }
 
