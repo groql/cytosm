@@ -94,4 +94,13 @@ public class NodeIdImplementation implements Comparable<NodeIdImplementation> {
     public void setConcatenationPosition(final Integer concatenationPosition) {
         this.concatenationPosition = concatenationPosition;
     }
+
+    @Override
+    public String toString() {
+        return "NodeIdImplementation{" +
+               "columnName='" + columnName + '\'' +
+               ", datatype='" + datatype + '\'' +
+               ", concatenationPosition=" + concatenationPosition +
+               '}';
+    }
 }

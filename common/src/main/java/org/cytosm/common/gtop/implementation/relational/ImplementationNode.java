@@ -142,4 +142,15 @@ public class ImplementationNode {
     public void setId(final List<NodeIdImplementation> id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "ImplementationNode{" +
+               "types=" + types +
+               ", tableName='" + tableName + '\'' +
+               ", id=" + id +
+               ", attributes=" + attributes +
+               ", restrictions=" + restrictions +
+               '}';
+    }
 }

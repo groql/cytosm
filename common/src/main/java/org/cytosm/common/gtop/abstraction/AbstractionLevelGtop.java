@@ -92,4 +92,12 @@ public class AbstractionLevelGtop {
 
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractionLevelGtop{" +
+               "abstractionNodes=" + abstractionNodes +
+               ", abstractionEdges=" + abstractionEdges +
+               '}';
+    }
 }

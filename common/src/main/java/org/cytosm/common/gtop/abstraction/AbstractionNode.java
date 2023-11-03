@@ -46,4 +46,11 @@ public class AbstractionNode extends AbstractionGraphComponent {
         return (this.hashCode() == o.hashCode());
     }
 
+    @Override
+    public String toString() {
+        return "AbstractionNode{" +
+               "types=" + types +
+               ", attributes=" + attributes +
+               '}';
+    }
 }

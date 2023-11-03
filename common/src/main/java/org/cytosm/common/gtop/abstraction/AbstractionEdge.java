@@ -114,4 +114,15 @@ public class AbstractionEdge extends AbstractionGraphComponent {
     public boolean equals(final Object o) {
         return (this == o);
     }
+
+    @Override
+    public String toString() {
+        return "AbstractionEdge{" +
+               "sourceType=" + sourceType +
+               ", destinationType=" + destinationType +
+               ", directed=" + directed +
+               ", types=" + types +
+               ", attributes=" + attributes +
+               '}';
+    }
 }

@@ -113,4 +113,12 @@ public class ImplementationEdge {
 
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "ImplementationEdge{" +
+               "types=" + types +
+               ", paths=" + paths +
+               '}';
+    }
 }

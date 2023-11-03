@@ -65,4 +65,13 @@ public class GTop {
     public ImplementationLevelGtop getImplementationLevel() {
         return implementationLevel;
     }
+
+    @Override
+    public String toString() {
+        return "GTop{" +
+               "version='" + version + '\'' +
+               ", abstractionLevel=" + abstractionLevel +
+               ", implementationLevel=" + implementationLevel +
+               '}';
+    }
 }
